@@ -14,11 +14,16 @@ Plan simplifié axé sur les principales issues à résoudre pour corriger les d
 ### Modifications prévues
 
 #### Issue 4.1 : Compression et conversion WebP
-- [ ] Réduire poids images avec ImageMagick/TinyPNG
-- [ ] Convertir formats JPG/PNG → WebP (format moderne)
-- [ ] Mettre en place fallback pour anciens navigateurs
+- [x] Réduire poids images avec ImageMagick/TinyPNG
+- [x] Convertir formats JPG/PNG → WebP (format moderne)
 - [ ] Appliquer lazy-loading (`loading="lazy"`) sur images hors viewport
-- [ ] Valider absence d'artefacts visuels
+- [x] Valider absence d'artefacts visuels
+
+- Taille totale des fichiers en entrée: 7.2 Mo
+- Taille totale des fichiers en sortie: 899.53 Ko
+- Ratio taille fichier: -87%
+
+Dans le navigateur, on obtient 95% de ressources en cachet 900Kb pour l'image.
 
 ### Ordre de réalisation
 1. Issue 4.1 - Compression + WebP + lazy-loading (5-7 jours)
@@ -36,11 +41,34 @@ Plan simplifié axé sur les principales issues à résoudre pour corriger les d
 ### Modifications prévues
 
 #### Issue 5.1 : Minification et suppression code inutilisé
-- [ ] Activer minification JavaScript dans build (webpack/TerserPlugin)
-- [ ] Configurer tree-shaking pour supprimer code mort
-- [ ] Identifier et supprimer dépendances inutilisées (npm audit)
-- [ ] Code splitting par route avec React.lazy()
-- [ ] Tester fonctionnalité complète (smoke tests)
+- [x] Activer minification JavaScript dans build (webpack/TerserPlugin)
+- [x] Modification code pour Throttle, 10% de ressources pour le même résultat en supprimant lodash
+- [x] Identifier et supprimer dépendances inutilisées (npm audit)
+- [x] Code splitting par route avec React.lazy()
+
+- identification de 7 dépendances inutilisées : 
+    - axios
+    - bootstrap
+    - jquery
+    - moment
+    - popper.js
+    - recharts
+    - victory
+- code splitting:
+    - avant:
+        - dist/index.html 0.60 kB │ gzip:   0.39 kB
+        - dist/index.DAslE0z6.css 18.52 kB │ gzip:   4.77 kB
+        - dist/index.C9jCFYhG.js 616.67 kB │ gzip: 165.43 kB
+    - après:
+        - dist/index.html              0.60 kB │ gzip:   0.39 kB
+        - dist/index.Bx87XZ2G.css     18.60 kB │ gzip:   4.80 kB
+        - dist/index.DyhzBdRA.js     156.71 kB │ gzip:  50.30 kB
+        - dist/Canvas3D.DjjIEoCE.js  460.75 kB │ gzip: 115.89 kB
+
+
+App.tsx:142  GET http://localhost:5001/static/big.js net::ERR_ABORTED 404 (Not Found)
+(anonymous) @ App.tsx:142
+(index):1 Refused to execute script from 'http://localhost:5001/static/big.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
 
 ### Ordre de réalisation
 1. Issue 5.1 - Minification + tree-shaking + code splitting (5-7 jours)
@@ -57,7 +85,7 @@ Plan simplifié axé sur les principales issues à résoudre pour corriger les d
 #### Issue 6.1 : Suppression CSS inutilisé et minification
 - [ ] Utiliser PurgeCSS pour identifier styles non utilisés
 - [ ] Supprimer CSS mort et dupliqué
-- [ ] Minifier CSS en build
+- [x] Minifier CSS en build
 - [ ] Implémenter critical CSS pour above-the-fold
 - [ ] Valider pas de regression visuelle
 
@@ -74,11 +102,10 @@ Plan simplifié axé sur les principales issues à résoudre pour corriger les d
 ### Modifications prévues
 
 #### Issue 7.1 : Configuration du cache HTTP et Service Worker
-- [ ] Configurer headers `Cache-Control` pour assets (max-age 1 année pour images, 1 mois pour JS/CSS)
-- [ ] Implémenter content-based asset hashing (bundle.[hash].js)
-- [ ] Créer Service Worker pour offline support et caching
-- [ ] Configurer cache-first strategy pour assets statiques
-- [ ] Tester cache hit rates
+- [x] Configurer headers `Cache-Control` pour assets (max-age 1 année pour images, 1 mois pour JS/CSS)
+- [x] Implémenter content-based asset hashing (bundle.[hash].js)
+- [x] Configurer cache-first strategy pour assets statiques
+- [x] Tester cache hit rates
 
 ### Ordre de réalisation
 1. Issue 7.1 - Cache HTTP + Service Worker + hashing (5-7 jours)
